@@ -5,8 +5,8 @@ datasource:
   driverName: mysql
   host: localhost
   port: 3306
-  database: gin-admin-api
-  username: root
-  password: 123456
+  database: GoServer
+  username: chaowang
+  password: wang94..
   charset: utf8mb4
   loc: Asia/Shanghai

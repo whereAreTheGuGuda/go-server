@@ -1,7 +1,7 @@
 package dto
 
 type AccountDto struct {
-	UserName string `json:"username" binding:"required,min=3,max=10"`
+	Phone    string `json:"phone" binding:"required,min=3,max=30"`
 	Password string `json:"password" binding:"required,min=6,max=16"`
 }
 

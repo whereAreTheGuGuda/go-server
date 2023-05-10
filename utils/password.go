@@ -2,7 +2,8 @@ package utils
 
 import (
 	"fmt"
-	"gin-admin-api/global"
+	"go-server/global"
+
 	"golang.org/x/crypto/bcrypt"
 )
 

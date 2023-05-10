@@ -1,16 +1,17 @@
 package account
 
 import (
-	"gin-admin-api/api/account/dto"
-	"gin-admin-api/api/account/vo"
-	"gin-admin-api/enum"
-	"gin-admin-api/global"
-	"gin-admin-api/model"
-	"gin-admin-api/utils"
 	"database/sql"
+	"go-server/api/account/dto"
+	"go-server/api/account/vo"
+	"go-server/enum"
+	"go-server/global"
+	"go-server/model"
+	"go-server/utils"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"strconv"
 )
 
 type IAccount interface {
@@ -27,6 +28,9 @@ type IAccount interface {
 type Account struct {
 	db *gorm.DB
 }
+
+// @Summary 注册
+// @Produce json
 
 func (a Account) Register(ctx *gin.Context) {
 	var createAccountDto dto.CreateAccountDto
@@ -49,7 +53,7 @@ func (a Account) Register(ctx *gin.Context) {
 	}
 	// 3.创建账号信息
 	if result := a.db.Create(&model.AccountEntity{
-		Username: createAccountDto.UserName,
+		Phone:    createAccountDto.Phone,
 		Password: password,
 		Status:   sql.NullInt64{Valid: true, Int64: enum.Normal},
 	}).Error; result != nil {
@@ -69,7 +73,7 @@ func (a Account) Login(ctx *gin.Context) {
 	}
 	// 1.根据账号名去查询密码信息
 	var accountEntity model.AccountEntity
-	if result := a.db.Where("username=?", accountDto.UserName).Select([]string{"password", "id", "username", "status"}).First(&accountEntity); result.RowsAffected == 0 {
+	if result := a.db.Where("phone=?", accountDto.Phone).Select([]string{"password", "id", "phone", "status"}).First(&accountEntity); result.RowsAffected == 0 {
 		global.Logger.Error("根据用户名查询数据失败" + result.Error.Error())
 		utils.Fail(ctx, "账号或密码错误")
 		return
@@ -91,13 +95,13 @@ func (a Account) Login(ctx *gin.Context) {
 	}
 	// 3.生产token返回给前端
 	hmacUser := utils.HmacUser{
-		Id:       int(accountEntity.Id),
-		Username: accountEntity.Username,
+		Id:    int(accountEntity.Id),
+		Phone: accountEntity.Phone,
 	}
 	if token, err := utils.GenerateToken(hmacUser); err == nil {
 		utils.Success(ctx, gin.H{
 			"id":       accountEntity.Id,
-			"username": accountEntity.Username,
+			"username": accountEntity.Nickname,
 			"token":    token,
 		})
 		return
@@ -217,7 +221,7 @@ func (a Account) GetAccountById(ctx *gin.Context) {
 	idInt, _ := strconv.Atoi(id)
 	var accountVo vo.AccountVo
 	if result := a.db.Model(&model.AccountEntity{}).Where("id=?", idInt).
-		Select([]string{"id", "username", "status", "created_at", "updated_at"}).
+		Select([]string{"id", "phone", "status", "created_at", "updated_at"}).
 		First(&accountVo).Error; result != nil {
 		global.Logger.Error("根据id查询账号信息失败" + result.Error())
 	}
@@ -226,10 +230,10 @@ func (a Account) GetAccountById(ctx *gin.Context) {
 }
 
 func (a Account) GetAccountPage(ctx *gin.Context) {
-	username := ctx.DefaultQuery("username", "")
+	phone := ctx.DefaultQuery("phone", "")
 	tx := a.db
-	if username != "" {
-		tx = tx.Where("username like ?", "%"+username+"%")
+	if phone != "" {
+		tx = tx.Where("phone like ?", "%"+phone+"%")
 	}
 	var accountList []vo.AccountVo
 	if result := tx.Model(&model.AccountEntity{}).Scopes(utils.Paginate(ctx.Request)).Find(&accountList).Error; result != nil {

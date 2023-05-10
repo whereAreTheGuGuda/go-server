@@ -2,9 +2,10 @@ package validators
 
 import (
 	"fmt"
-	"gin-admin-api/constants"
-	"github.com/go-playground/validator/v10"
+	"go-server/constants"
 	"regexp"
+
+	"github.com/go-playground/validator/v10"
 )
 
 // ValidateMobile 定义验证手机号码的校验器

@@ -5,8 +5,8 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 
-	"gin-admin-api/utils"
-	"gin-admin-api/validators"
+	"go-server/utils"
+	"go-server/validators"
 )
 
 func InitValidate() {

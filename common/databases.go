@@ -1,16 +1,17 @@
 package common
 
 import (
-	"gin-admin-api/global"
-	"gin-admin-api/initialize"
 	"fmt"
+	"go-server/global"
+	"go-server/initialize"
+	"net/url"
+	"strconv"
+
 	_ "github.com/go-sql-driver/mysql"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"net/url"
-	"strconv"
 )
 
 func initDB() {

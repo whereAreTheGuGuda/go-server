@@ -2,16 +2,17 @@ package common
 
 import (
 	"fmt"
-	"github.com/lestrrat/go-file-rotatelogs"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"io"
 	"log"
 	"os"
 	"path"
 	"time"
 
-	"gin-admin-api/global"
+	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+
+	"go-server/global"
 )
 
 func getWriter(filename string) io.Writer {

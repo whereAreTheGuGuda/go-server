@@ -1,8 +1,9 @@
 package initialize
 
 import (
-	"gin-admin-api/middleware"
-	"gin-admin-api/router"
+	"go-server/middleware"
+	"go-server/router"
+
 	"github.com/gin-gonic/gin"
 )
 

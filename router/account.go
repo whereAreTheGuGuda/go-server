@@ -1,9 +1,10 @@
 package router
 
 import (
-	"gin-admin-api/api/account"
-	"gin-admin-api/global"
-	"gin-admin-api/middleware"
+	"go-server/api/account"
+	"go-server/global"
+	"go-server/middleware"
+
 	"github.com/gin-gonic/gin"
 )
 

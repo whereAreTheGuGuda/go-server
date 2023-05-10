@@ -1,7 +1,8 @@
 package global
 
 import (
-	"gin-admin-api/config"
+	"go-server/config"
+
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )

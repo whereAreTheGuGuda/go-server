@@ -1,7 +1,7 @@
 package vo
 
 import (
-	"gin-admin-api/model"
+	"go-server/model"
 )
 
 type AccountVo struct {
@@ -10,4 +10,5 @@ type AccountVo struct {
 	UpdatedAt model.LocalTime `json:"updatedAt"`
 	Username  string          `json:"username"` // 用户名
 	Status    int64           `json:"status"`   // 状态1是正常,0是禁用
+	Phone     string          `josn:"phone"`
 }

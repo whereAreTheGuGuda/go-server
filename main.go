@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
-	"gin-admin-api/global"
-	"gin-admin-api/initialize"
+	"go-server/global"
+	"go-server/initialize"
 	"strconv"
 
 	// 初始化数据库连接及日志文件
-	_ "gin-admin-api/common"
+	_ "go-server/common"
 	// 数据模型中init方法的执行
-	_ "gin-admin-api/model"
+	_ "go-server/model"
 	// 文档
+	// "go get github.com/swaggo"
 )
 
 func main() {

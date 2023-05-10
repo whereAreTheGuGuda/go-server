@@ -2,10 +2,11 @@ package middleware
 
 import (
 	"fmt"
-	"gin-admin-api/global"
+	"go-server/global"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 func LoggerMiddleWare() gin.HandlerFunc {

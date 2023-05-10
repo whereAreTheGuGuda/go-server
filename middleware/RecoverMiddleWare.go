@@ -2,7 +2,8 @@ package middleware
 
 import (
 	"fmt"
-	"gin-admin-api/utils"
+	"go-server/utils"
+
 	"github.com/gin-gonic/gin"
 )
 

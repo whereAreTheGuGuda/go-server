@@ -1,10 +1,11 @@
 package middleware
 
 import (
-	"gin-admin-api/global"
-	"gin-admin-api/model"
-	"gin-admin-api/utils"
 	"fmt"
+	"go-server/global"
+	"go-server/model"
+	"go-server/utils"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -34,7 +35,7 @@ func AuthMiddleWare() gin.HandlerFunc {
 		}
 		// 从token中解析出来的数据挂载到上下文上,方便后面的控制器使用
 		c.Set("accountId", claims.UserId)
-		c.Set("userName", claims.Username)
+		c.Set("phone", claims.Phone)
 		c.Next()
 	}
 }

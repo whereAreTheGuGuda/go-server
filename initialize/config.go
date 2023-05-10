@@ -1,12 +1,13 @@
 package initialize
 
 import (
-	"gin-admin-api/global"
-	"gin-admin-api/utils"
 	"fmt"
-	"github.com/spf13/viper"
+	"go-server/global"
+	"go-server/utils"
 	"os"
 	"path"
+
+	"github.com/spf13/viper"
 )
 
 func GetEnvInfo(env string) bool {
