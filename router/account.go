@@ -22,4 +22,5 @@ func InitAccountRouter(Router *gin.RouterGroup) {
 	accountRouter.PUT("/status/:id", middleware.AuthMiddleWare(), newAccount.UpdateStatusById)                          // 修改状态
 	accountRouter.GET("/:id", middleware.AuthMiddleWare(), newAccount.GetAccountById)                                   // 根据id获取数据
 	accountRouter.GET("", middleware.AuthMiddleWare(), newAccount.GetAccountPage)                                       // 分页获取数据
+	accountRouter.POST("edit", middleware.AuthMiddleWare(), newAccount.UpdateCurrentAccountInfo)                        //修改用户信息
 }

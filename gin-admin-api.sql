@@ -4,7 +4,7 @@
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
    `id` int NOT NULL AUTO_INCREMENT primary key COMMENT '主键id',
-   `username` varchar(50) UNIQUE NOT NULL COMMENT '用户名',
+   `nickname` varchar(50) UNIQUE NOT NULL COMMENT '用户名',
    `password` varchar(100) NOT null COMMENT '密码',
    `status` tinyint(4) DEFAULT 1 COMMENT '状态1是正常,0是禁用',
    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS `account_token`;
 CREATE TABLE `account_token` (
      `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键id',
      `account_id` int NOT NULL COMMENT '关联到账号表id',
-     `username` varchar(50) DEFAULT NULL COMMENT '用户名',
+     `nickname` varchar(50) DEFAULT NULL COMMENT '用户名',
      `token` varchar(200) NOT NULL COMMENT 'token',
      `expire_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'token过期时间',
      `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

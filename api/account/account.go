@@ -23,6 +23,7 @@ type IAccount interface {
 	UpdateCurrentAccountPassword(ctx *gin.Context) // 修改当前账号密码
 	GetAccountById(ctx *gin.Context)               // 根据id获取账号信息
 	GetAccountPage(ctx *gin.Context)               // 分页获取账号数据
+	UpdateCurrentAccountInfo(ctx *gin.Context)
 }
 
 type Account struct {
@@ -100,9 +101,19 @@ func (a Account) Login(ctx *gin.Context) {
 	}
 	if token, err := utils.GenerateToken(hmacUser); err == nil {
 		utils.Success(ctx, gin.H{
-			"id":       accountEntity.Id,
-			"username": accountEntity.Nickname,
-			"token":    token,
+			"id":        accountEntity.Id,
+			"nickname":  accountEntity.Nickname,
+			"token":     token,
+			"birthday":  accountEntity.Birthday,
+			"coin":      accountEntity.Coin,
+			"city":      accountEntity.City,
+			"country":   accountEntity.Country,
+			"province":  accountEntity.Province,
+			"star":      accountEntity.Star,
+			"status":    accountEntity.Status,
+			"vpi_level": accountEntity.Vip_Level,
+			"phone":     accountEntity.Phone,
+			"sex":       accountEntity.Sex,
 		})
 		return
 	} else {
@@ -181,6 +192,37 @@ func (a Account) UpdateStatusById(ctx *gin.Context) {
 		return
 	}
 	utils.Success(ctx, "更新成功")
+	return
+}
+
+// 更新用户信息
+func (a Account) UpdateCurrentAccountInfo(ctx *gin.Context) {
+	accountId := ctx.GetInt("accountId")
+	nickname := ctx.GetString("nickname")
+	nation := ctx.GetString("nation")
+	province := ctx.GetString("province")
+	city := ctx.GetString("city")
+	country := ctx.GetString("country")
+	birthday := ctx.GetString("birthday")
+	var editAccountInfo dto.EditAccountInfo
+	if err := ctx.ShouldBindJSON(&editAccountInfo); err != nil {
+		message := utils.ShowErrorMessage(err)
+		utils.Fail(ctx, message)
+		return
+	}
+	if result := a.db.Where("id=?", accountId).Updates(&model.AccountEntity{
+		Nickname: nickname,
+		Nation:   nation,
+		Province: province,
+		City:     city,
+		Birthday: birthday,
+		Country:  country,
+	}).Error; result != nil {
+		global.Logger.Error("更新失败" + result.Error())
+		utils.Fail(ctx, "更新失败")
+		return
+	}
+	utils.Success(ctx, "修改密码成功")
 	return
 }
 
