@@ -115,11 +115,9 @@ func (a Account) Login(ctx *gin.Context) {
 			"phone":     accountEntity.Phone,
 			"sex":       accountEntity.Sex,
 		})
-		return
 	} else {
 		global.Logger.Error("生成token失败")
 		utils.Fail(ctx, "账号或密码错误")
-		return
 	}
 }
 
@@ -129,10 +127,9 @@ func (a Account) DeleteAccountById(ctx *gin.Context) {
 	if result := a.db.Where("id=?", idInt).Delete(&model.AccountEntity{}).Error; result != nil {
 		global.Logger.Error("根据id删除账号失败" + result.Error())
 		utils.Fail(ctx, "删除失败")
-		return
+	} else {
+		utils.Success(ctx, "删除成功")
 	}
-	utils.Success(ctx, "删除成功")
-	return
 }
 
 func (a Account) ModifyPasswordById(ctx *gin.Context) {
@@ -162,10 +159,9 @@ func (a Account) ModifyPasswordById(ctx *gin.Context) {
 	}).Error; result != nil {
 		global.Logger.Error("修改密码失败" + result.Error())
 		utils.Fail(ctx, "修改密码失败")
-		return
+	} else {
+		utils.Success(ctx, "修改密码成功")
 	}
-	utils.Success(ctx, "修改密码成功")
-	return
 }
 
 func (a Account) UpdateStatusById(ctx *gin.Context) {
@@ -189,10 +185,9 @@ func (a Account) UpdateStatusById(ctx *gin.Context) {
 	}).Error; result != nil {
 		global.Logger.Error("根据id修改状态失败" + result.Error())
 		utils.Fail(ctx, "更新失败")
-		return
+	} else {
+		utils.Success(ctx, "更新成功")
 	}
-	utils.Success(ctx, "更新成功")
-	return
 }
 
 // 更新用户信息
@@ -220,10 +215,9 @@ func (a Account) UpdateCurrentAccountInfo(ctx *gin.Context) {
 	}).Error; result != nil {
 		global.Logger.Error("更新失败" + result.Error())
 		utils.Fail(ctx, "更新失败")
-		return
+	} else {
+		utils.Success(ctx, "修改密码成功")
 	}
-	utils.Success(ctx, "修改密码成功")
-	return
 }
 
 func (a Account) UpdateCurrentAccountPassword(ctx *gin.Context) {
@@ -251,14 +245,12 @@ func (a Account) UpdateCurrentAccountPassword(ctx *gin.Context) {
 	}).Error; result != nil {
 		global.Logger.Error("修改密码失败" + result.Error())
 		utils.Fail(ctx, "修改密码失败")
-		return
+	} else {
+		utils.Success(ctx, "修改密码成功")
 	}
-	utils.Success(ctx, "修改密码成功")
-	return
 }
 
 func (a Account) GetAccountById(ctx *gin.Context) {
-
 	id := ctx.Param("id")
 	idInt, _ := strconv.Atoi(id)
 	var accountVo vo.AccountVo
@@ -266,9 +258,10 @@ func (a Account) GetAccountById(ctx *gin.Context) {
 		Select([]string{"id", "phone", "status", "created_at", "updated_at"}).
 		First(&accountVo).Error; result != nil {
 		global.Logger.Error("根据id查询账号信息失败" + result.Error())
+		utils.Fail(ctx, "根据id查询账号信息失败")
+	} else {
+		utils.Success(ctx, accountVo)
 	}
-	utils.Success(ctx, accountVo)
-	return
 }
 
 func (a Account) GetAccountPage(ctx *gin.Context) {
@@ -284,14 +277,16 @@ func (a Account) GetAccountPage(ctx *gin.Context) {
 	var total int64
 	if result := tx.Model(&model.AccountEntity{}).Count(&total).Error; result != nil {
 		global.Logger.Error("查询条数失败" + result.Error())
+	} else {
+		utils.Success(ctx, utils.PageVo{
+			Data:  accountList,
+			Total: total,
+		})
 	}
-	utils.Success(ctx, utils.PageVo{
-		Data:  accountList,
-		Total: total,
-	})
 }
 
 func NewAccount(db *gorm.DB) IAccount {
+	db.AutoMigrate(&model.AccountEntity{})
 	return Account{
 		db: db,
 	}

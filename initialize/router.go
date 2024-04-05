@@ -19,5 +19,6 @@ func Routers() *gin.Engine {
 	ApiGroup := Router.Group("/api/v1/admin")
 	// 注册路由
 	router.InitAccountRouter(ApiGroup) // 账号中心
+	router.InitCommunityRouter(ApiGroup)
 	return Router
 }
