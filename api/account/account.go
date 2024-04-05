@@ -60,9 +60,9 @@ func (a Account) Register(ctx *gin.Context) {
 	}).Error; result != nil {
 		global.Logger.Error("创建账号失败" + result.Error())
 		utils.Fail(ctx, "创建账号失败")
+	} else {
+		utils.Success(ctx, "创建成功")
 	}
-	utils.Success(ctx, "创建成功")
-	return
 }
 
 func (a Account) Login(ctx *gin.Context) {
